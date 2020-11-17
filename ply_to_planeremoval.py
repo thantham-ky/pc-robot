@@ -1,8 +1,13 @@
 import open3d as o3d
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
-pcd = o3d.io.read_point_cloud('D:/thantham/pc-robot/testcats4.ply')
+import sys
+
+ply_file = sys.argv[1]
+
+pcd = o3d.io.read_point_cloud(ply_file)
 plane_model, inliers = pcd.segment_plane(distance_threshold=0.01,
                                          ransac_n=3,
                                          num_iterations=1000)
@@ -18,10 +23,13 @@ with o3d.utility.VerbosityContextManager(
     labels = np.array(
         outlier_cloud.cluster_dbscan(eps=0.02, min_points=10, print_progress=True))
 
-max_label = labels.max()
-print(f"point cloud has {max_label + 1} clusters")
-colors = plt.get_cmap("tab20")(labels / (max_label if max_label > 0 else 1))
-colors[labels < 0] = 0
-outlier_cloud.colors = o3d.utility.Vector3dVector(colors[:, :3])
+# max_label = labels.max()
+# print(f"point cloud has {max_label + 1} clusters")
+# colors = plt.get_cmap("tab20")(labels / (max_label if max_label > 0 else 1))
+# colors[labels < 0] = 0
+# outlier_cloud.colors = o3d.utility.Vector3dVector(colors[:, :3])
+
+file_path, ext = os.path.splitext(ply_file)
+o3d.io.write_point_cloud(ply_file+'_seg.ply', outlier_cloud, write_ascii=True)
 
 o3d.visualization.draw_geometries([outlier_cloud])
