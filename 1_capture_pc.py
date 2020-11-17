@@ -7,10 +7,10 @@
 
 # %% 1 import the library
 import pyrealsense2 as rs
-
+import sys
 # %% 2 define desitnation to save
 
-ply_file = '1.ply'
+ply_file = sys.argv[1]
 
 # %% 3 config camera
 
