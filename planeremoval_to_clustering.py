@@ -14,7 +14,7 @@ pcd = o3d.io.read_point_cloud(ply_file)
 
 pcd_array = np.asarray(pcd.points)
 
-kmeans = KMeans(n_clusters=11, random_state=0).fit(pcd_array)
+kmeans = KMeans(n_clusters=30, random_state=0).fit(pcd_array)
 
 print('Labels on training: ',kmeans.labels_)
 print('Centroid coordinates: \n',kmeans.cluster_centers_)
